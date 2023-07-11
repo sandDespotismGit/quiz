@@ -1,0 +1,11 @@
+.desktop_body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.right_menu_button > button{
+    border: 0;
+    border-width: 0px;
+    background-color: transparent;
+}
