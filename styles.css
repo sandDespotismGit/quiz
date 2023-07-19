@@ -67,6 +67,9 @@ p{
     margin: 20px;
     width: 358px;
     height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .one_two_buttonleft{
     border-top-left-radius: 15px;
@@ -88,7 +91,7 @@ p{
     border-radius: 12.789px;
     background: #FE1F62;
     height:35px;
-    width: 360px;
+    width: 350px;
     display: flex;
     padding: 5px;
     flex-direction: row;
@@ -99,5 +102,61 @@ p{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     width: 360px;
+}
+.plan_box{
+    width: 358.082px;
+    height: 97.194px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #999999;
+    border-radius: 12.789px; 
+    display: flex;
+    padding: 15px;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px;
+
+    
+}
+.plan_box_time{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15.904px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    padding: 15px;
+}
+.plan_box_time_round{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #999999;
+}
+.plan_box_price{
+    color: #999; 
+    font-size: 15.904px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-image: url('plan_box_price_b.svg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 15px;
+}
+#plan_box_p_price{
+    color: #3A3A3A; 
+    font-size: 30.693px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; /* 42.97px */ 
 }
