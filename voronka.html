@@ -2,6 +2,7 @@
     <head>
         <title>воронка</title>
         <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="voronka_script.js"></script>
         <link rel="stylesheet" type="text/css" href="styles.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +62,7 @@
                         <button class="one_two_buttonleft">Стандарт</button>
                         <button class="one_two_buttonright">Премиум</button>
                     </div>
-                    <div class="plan_box">
+                    <div class="plan_box" onclick="change_plan_box(0)">
                         <div class="plan_box_time">
                             <div class="plan_box_time_round">                                    
                             </div>
@@ -76,7 +77,7 @@
                             <p> в день</p>
                         </div>
                     </div>
-                    <div class="plan_box">
+                    <div class="plan_box" onclick="change_plan_box(1)">
                         <div class="plan_box_time">
                             <div class="plan_box_time_round">                                    
                             </div>
@@ -91,7 +92,7 @@
                             <p> в день</p>
                         </div>
                     </div>
-                    <div class="plan_box">
+                    <div class="plan_box" onclick="change_plan_box(2)">
                         <div class="plan_box_time">
                             <div class="plan_box_time_round">                                    
                             </div>
@@ -107,6 +108,15 @@
                         </div>
                     </div>
 
+                </div>
+                <div class="agree">
+                    <input type="checkbox" id="agree" class="custom_checkbox" name="agree" value="yes">
+                    <label for="agree">
+                    </label>
+                    <p>By purchasing you agree to our Private policy, Terms of Service and Refund Policy.                    </p>
+                </div>
+                <button class="big_button">оплатить</button>
+                <div class="payments">
                 </div>
             </div>
         </div>
