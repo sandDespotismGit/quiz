@@ -30,6 +30,18 @@ class ProductCrudController extends CrudController
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
         CRUD::setEntityNameStrings('продукт', 'продукты');
+
+        $this->crud->setColumns(['name', 'price']);
+        $this->crud->addField([
+            'name' => 'name',
+            'type' => 'text',
+            'label' => "Наименование продукта"
+        ]);
+        $this->crud->addField([
+            'name' => 'price',
+            'type' => 'text',
+            'label' => "Цена"
+        ]);
     }
 
     /**
