@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Admin\ProductCrudController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('home');
 
 //отслеживаем захода пользователя на страницу для получения данных для вывода
-Route::get('/getAll', [ProductCrudController::class, 'allData'])->name('product-list');
+Route::get('/getAll', [ProductController::class, 'allData'])->name('product-list');
 
 Route::post('/', function () {
     return view('home');

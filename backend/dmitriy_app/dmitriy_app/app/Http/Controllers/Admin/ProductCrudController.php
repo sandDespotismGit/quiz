@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ProductRequest;
-use App\Models\Product;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -22,31 +21,19 @@ class ProductCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     *
+     * 
      * @return void
      */
     public function setup()
     {
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
-        CRUD::setEntityNameStrings('продукт', 'продукты');
-
-        $this->crud->setColumns(['name', 'price']);
-        $this->crud->addField([
-            'name' => 'name',
-            'type' => 'text',
-            'label' => "Наименование продукта"
-        ]);
-        $this->crud->addField([
-            'name' => 'price',
-            'type' => 'text',
-            'label' => "Цена"
-        ]);
+        CRUD::setEntityNameStrings('product', 'products');
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     *
+     * 
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -62,7 +49,7 @@ class ProductCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -79,18 +66,12 @@ class ProductCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    //получение всех продуктов из бд
-    public function allData()
-    {
-        return view('inc\product_list', ['data' => Product::all()]);
     }
 }

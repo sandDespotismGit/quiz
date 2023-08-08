@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\RateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class UserCrudController
+ * Class RateCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class UserCrudController extends CrudController
+class RateCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\User::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        CRUD::setEntityNameStrings('user', 'users');
+        CRUD::setModel(\App\Models\Rate::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/rate');
+        CRUD::setEntityNameStrings('rate', 'rates');
     }
 
     /**
@@ -55,7 +55,7 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
+        CRUD::setValidation(RateRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
 
         /**
