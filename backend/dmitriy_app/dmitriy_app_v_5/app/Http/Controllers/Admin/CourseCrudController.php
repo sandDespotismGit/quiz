@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CourseRequest;
+use App\Models\Collaboration;
 use App\Models\Course;
 use App\Models\Rate;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -85,6 +86,7 @@ class CourseCrudController extends CrudController
         CRUD::column('name')->prefix('RU_')->label('Название');
         CRUD::column('description')->label('Описание');
         CRUD::column('is_active')->label('Статус курса');
+        CRUD::column('is_bump')->label('Возможность покупки в комплекте');
 
         //подкачка тарифов
         CRUD::column('rate_id')->wrapper([
@@ -103,7 +105,7 @@ class CourseCrudController extends CrudController
     protected function setupCreateOperation()
     {
         //CRUD::setValidation(CourseRequest::class);
-        CRUD::setFromDb(); // set fields from db columns.
+        //CRUD::setFromDb(); // set fields from db columns.
 
         /**
          * Fields can be defined using the fluent syntax:
@@ -112,7 +114,7 @@ class CourseCrudController extends CrudController
 
         CRUD::field([
             'label' => "Коллаборации",
-            'type' => 'select',
+            'type' => 'select2',
             'name' => 'collaboration_id', // the method that defines the relationship in your Model
             'entity' => 'collaborations', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to user
@@ -124,7 +126,7 @@ class CourseCrudController extends CrudController
 
         CRUD::field([
             'label' => "Тарифы",
-            'type' => 'select',
+            'type' => 'select2',
             'name' => 'rate_id', // the method that defines the relationship in your Model
             'entity' => 'rates', // the method that defines the relationship in your Model
             'attribute' => 'name', // foreign key attribute that is shown to user
@@ -143,6 +145,8 @@ class CourseCrudController extends CrudController
             // optional
             //'inline'      => false, // show the radios all on the same line?
         ]);
+
+        CRUD::field('is_bump')->label("Сделать продукт доступным для комплекта?");
     }
 
     public function showDetailsRow($id){
@@ -172,7 +176,28 @@ class CourseCrudController extends CrudController
     public function purchaseCourse($id){
         $course = Course::find($id);
         $rate = Rate::find($course->rate_id);
+        $bump = DB::table('courses')->where('id', '!=', $id)->where('is_bump', '=', 1)->limit(2)->get();
+        $bump_price = DB::table('rates')
+            ->whereIn('id', [$bump[0]->rate_id, $bump[1]->rate_id])->inRandomOrder()
+            //->where('id', '=', $bump[0]->rate_id)->orWhere('id', '=', $bump[1]->rate_id)
+            ->get();
 
-        return view('inc.purchase', ['data' => [$course, $rate]]);
+        /*
+            $collection = collect(['course' => $bump, 'rate' => $bump_price]);
+            $collection->toArray();
+        */
+
+        if($bump_price->count() == 1){
+            $bump_price->push($bump_price[0]);
+        }
+
+        $collection = collect($bump)->zip($bump_price)->transform(function ($values) {
+            return [
+                'course' => $values[0],
+                'rate' => $values[1],
+            ];
+        });
+
+        return view('inc.purchase', ['data' => [$course, $rate, $collection]]);
     }
 }

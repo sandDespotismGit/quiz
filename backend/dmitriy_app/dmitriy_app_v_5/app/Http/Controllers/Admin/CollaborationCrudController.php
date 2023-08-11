@@ -28,7 +28,7 @@ class CollaborationCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Collaboration::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/collaboration');
-        CRUD::setEntityNameStrings('collaboration', 'collaborations');
+        CRUD::setEntityNameStrings('коллаборацию', 'коллаборации');
     }
 
     /**
