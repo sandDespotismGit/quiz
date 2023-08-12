@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\CourseRequest;
 use App\Models\Collaboration;
 use App\Models\Course;
+use App\Models\Cryptogram;
 use App\Models\Rate;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -173,19 +174,28 @@ class CourseCrudController extends CrudController
         return view('inc\course_list', ['data' => Course::all()]);
     }
 
+    //для страницы по обработке заказа
+    //тут можешь увидеть, в каком порядке приходят данные на страницу (см. return)
     public function purchaseCourse($id){
         $course = Course::find($id);
         $rate = Rate::find($course->rate_id);
+        $collab = Collaboration::find($course->collaboration_id);
         $bump = DB::table('courses')->where('id', '!=', $id)->where('is_bump', '=', 1)->limit(2)->get();
         $bump_price = DB::table('rates')
             ->whereIn('id', [$bump[0]->rate_id, $bump[1]->rate_id])->inRandomOrder()
-            //->where('id', '=', $bump[0]->rate_id)->orWhere('id', '=', $bump[1]->rate_id)
             ->get();
 
+
         /*
-            $collection = collect(['course' => $bump, 'rate' => $bump_price]);
-            $collection->toArray();
-        */
+         * Тут я вытяну криптограмму по определённому id, т. к. у нас на сайте ещё нет входа от имени пользователей
+         * Из-за этого я не могу вытягивать id активного пользователя, и тут просто пропишу вытягивание дэфолтной крипты
+         * по указанному мной id пользователя
+         *
+         * То есть тут могут возникнуть траблы, ну или надо будет сгенеренную крипту закинуть просто в бд по id
+         * что ща тут укажу
+         * */
+
+        $crypto = Cryptogram::find(1); //ищу по id = 1
 
         if($bump_price->count() == 1){
             $bump_price->push($bump_price[0]);
@@ -198,6 +208,6 @@ class CourseCrudController extends CrudController
             ];
         });
 
-        return view('inc.purchase', ['data' => [$course, $rate, $collection]]);
+        return view('inc.purchase', ['data' => [$course, $rate, $collection, $collab, $crypto]]);
     }
 }
