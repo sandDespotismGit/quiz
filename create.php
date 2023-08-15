@@ -1,9 +1,11 @@
 <?php
 
+use Stripe\StripeClient;
+
 require_once 'backend/dmitriy_app/dmitriy_app_v_5/vendor/autoload.php';
 require_once 'secrets.php';
 
-$stripe = new backend\dmitriy_app\dmitriy_app_v_5\vendor\stripe\stripe-php\lib\StripeClient('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+$stripe = new StripeClient($stripeSecretKey);
 
 function calculateOrderAmount(array $items): int {
     // Replace this constant with a calculation of the order's amount

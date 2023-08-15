@@ -27,19 +27,8 @@
                         </li>
                     @endforeach
                 </ul>
-                <h3>
-                    Ниже выводится данные криптограммы, которую перед этим вытянул, так что ты знаешь, как к ней обратиться - просто скопируй всё вместе с фигурными скобками
-                </h3>
-                <section>
-                    <label>
-                        Криптограмма ниже
-                    </label>
-                    <h3>
-                        {{ $data[4]->data }}
-                    </h3>
-                </section>
                 <div class="card-body" style="background-color: #df9f1f" >
-                    <a href="#" class="list-group-item list-group-item-action">Пропиши тут то, что тебе нужно</a>
+                    <a href="#" class="list-group-item list-group-item-action">Купить</a>
                 </div>
             </div>
         </div>
