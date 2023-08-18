@@ -7,3 +7,5 @@
 <x-backpack::menu-item title="Криптограммы" icon="la la-question" :link="backpack_url('cryptogram')" />
 <x-backpack::menu-item title="Коллаборации" icon="la la-question" :link="backpack_url('collaboration')" />
 <x-backpack::menu-item title="Заказы" icon="la la-question" :link="backpack_url('order')" />
+
+<x-backpack::menu-item title="Цепочки продаж" icon="la la-question" :link="backpack_url('courses-clients')" />
