@@ -8,16 +8,3 @@ function change_credits(select_box){
     }
     select_pays[select_box].style.borderColor = color;
 }
-const fieldValues = {
-    cvv: '911',
-    cardNumber: '4242 4242 4242 4242',
-    expDateMonth: '12',
-    expDateYear: '24',
-}
-
-checkout.createPaymentCryptogram(fieldValues)
-    .then((cryptogram) => {
-        console.log(cryptogram);
-    }).catch((errors) => {
-        console.log(errors)
-});
