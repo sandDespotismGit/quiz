@@ -27,7 +27,7 @@ return new class extends Migration
                 ->on('courses')->onDelete('cascade');
 
             //для связки цепочки курсов
-            $table->bigInteger('key')->unique();
+            $table->bigInteger('key');
 
             $table->timestamps();
         });

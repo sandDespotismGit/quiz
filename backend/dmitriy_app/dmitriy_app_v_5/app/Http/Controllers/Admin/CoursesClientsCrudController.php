@@ -47,6 +47,25 @@ class CoursesClientsCrudController extends CrudController
          */
 
         CRUD::enableExportButtons();
+
+        CRUD::column('clients_id')->label('Продавец');
+
+        //CRUD::column('courses_id')->label('Текущий курс');
+
+        #ссылочный просмотр привязок
+        CRUD::column('courses_id')->wrapper([
+            'href' => function($crud, $column, $entry){
+                return backpack_url('course/' . $entry->courses_id . '/show');
+            },
+        ])->label('Текущий курс');
+
+        CRUD::column('next_courses_id')->wrapper([
+            'href' => function($crud, $column, $entry){
+                return backpack_url('course/' . $entry->next_courses_id . '/show');
+            },
+        ])->label('Следующий курс');
+
+        CRUD::column('key')->label('Ключ доступа');
     }
 
     /**
@@ -64,6 +83,35 @@ class CoursesClientsCrudController extends CrudController
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
          */
+
+        CRUD::field([
+            'label' => "Клиент",
+            'type' => 'select2',
+            'name' => 'clients_id', // the method that defines the relationship in your Model
+            'entity' => 'clients', // the method that defines the relationship in your Model
+            'attribute' => 'email', // foreign key attribute that is shown to user
+            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+        ]);
+
+        CRUD::field([
+            'label' => "Текущий курс",
+            'type' => 'select2',
+            'name' => 'courses_id', // the method that defines the relationship in your Model
+            'entity' => 'courses', // the method that defines the relationship in your Model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+        ]);
+
+        CRUD::field([
+            'label' => "Следующий курс",
+            'type' => 'select2',
+            'name' => 'next_courses_id', // the method that defines the relationship in your Model
+            'entity' => 'courses', // the method that defines the relationship in your Model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+        ]);
+
+        CRUD::field('key')->label("Ключ доступа");
     }
 
     /**

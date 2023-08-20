@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\CourseRequest;
 use App\Models\Collaboration;
 use App\Models\Course;
+use App\Models\CoursesClients;
 use App\Models\Cryptogram;
 use App\Models\Rate;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -175,25 +176,21 @@ class CourseCrudController extends CrudController
     }
 
     //для страницы по обработке заказа
-    //тут можешь увидеть, в каком порядке приходят данные на страницу (см. return)
-    public function purchaseCourse($id){
-        $course = Course::find($id);
+    public function purchaseCourse($id, $key=null){
+        if($key == null){
+            $mainCourse = CoursesClients::where('courses_id', $id)->first();
+        }
+        else {
+            $mainCourse = CoursesClients::where('courses_id', $id)->where('key', $key)->first();
+        }
+
+        $course = Course::find($mainCourse->courses_id);
         $rate = Rate::find($course->rate_id);
         $collab = Collaboration::find($course->collaboration_id);
         $bump = DB::table('courses')->where('id', '!=', $id)->where('is_bump', '=', 1)->limit(2)->get();
         $bump_price = DB::table('rates')
             ->whereIn('id', [$bump[0]->rate_id, $bump[1]->rate_id])->inRandomOrder()
             ->get();
-
-
-        /*
-         * Тут я вытяну криптограмму по определённому id, т. к. у нас на сайте ещё нет входа от имени пользователей
-         * Из-за этого я не могу вытягивать id активного пользователя, и тут просто пропишу вытягивание дэфолтной крипты
-         * по указанному мной id пользователя
-         *
-         * То есть тут могут возникнуть траблы, ну или надо будет сгенеренную крипту закинуть просто в бд по id
-         * что ща тут укажу
-         * */
 
         $crypto = Cryptogram::find(1); //ищу по id = 1
 
@@ -208,6 +205,11 @@ class CourseCrudController extends CrudController
             ];
         });
 
-        return view('inc.purchase', ['data' => [$course, $rate, $collection, $collab, $crypto]]);
+        if($mainCourse->next_courses_id == null){
+            return view('inc.finish', ['data' => ['Спасибо за покупки!']]);
+        }
+        else {
+            return view('inc.purchase', ['data' => [$course, $rate, $collection, $collab, $crypto, $mainCourse]]);
+        }
     }
 }

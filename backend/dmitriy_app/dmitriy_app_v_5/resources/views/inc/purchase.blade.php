@@ -28,7 +28,7 @@
                     @endforeach
                 </ul>
                 <div class="card-body" style="background-color: #df9f1f" >
-                    <a href="#" class="list-group-item list-group-item-action">Купить</a>
+                    <a href="{{ route('course-purchase-data', $data[5]->next_courses_id, $data[5]->key) }}" class="list-group-item list-group-item-action">Купить</a>
                 </div>
             </div>
         </div>
