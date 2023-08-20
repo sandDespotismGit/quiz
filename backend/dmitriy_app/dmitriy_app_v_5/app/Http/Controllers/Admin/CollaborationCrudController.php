@@ -46,6 +46,8 @@ class CollaborationCrudController extends CrudController
          * - CRUD::column('price')->type('number');
          */
 
+        CRUD::enableExportButtons();
+
         CRUD::column('name')->label('Название');
         CRUD::column('image')->type('image')->label('Логотип');
     }

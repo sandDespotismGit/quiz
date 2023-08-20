@@ -46,6 +46,8 @@ class OrderCrudController extends CrudController
          * - CRUD::column('price')->type('number');
          */
 
+        CRUD::enableExportButtons();
+
         CRUD::column('client_id')->label('Id клиента');
         CRUD::column('course_id')->label('Id основного курса');
         CRUD::column('course_id_2')->label('Id первого bump курса');

@@ -21,7 +21,7 @@ class RateCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class RateCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -41,28 +41,23 @@ class RateCrudController extends CrudController
     {
         CRUD::setFromDb();
 
-        /*CRUD::field('name');
-        CRUD::field('price');*/
-
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
          */
+
+        CRUD::enableExportButtons();
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
-        //CRUD::setValidation(RateRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
-
-        //CRUD::field('name');
-        //CRUD::field('price');
 
         /**
          * Fields can be defined using the fluent syntax:
@@ -72,7 +67,7 @@ class RateCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

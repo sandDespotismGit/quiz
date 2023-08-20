@@ -47,6 +47,8 @@ class CryptogramCrudController extends CrudController
          * - CRUD::column('price')->type('number');
          */
 
+        CRUD::enableExportButtons();
+
          CRUD::column('client_id')->wrapper([
             'href' => function($crud, $column, $entry){
                 return backpack_url('client/' . $entry->client_id . '/show');
