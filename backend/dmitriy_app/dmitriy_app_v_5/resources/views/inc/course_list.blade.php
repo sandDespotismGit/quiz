@@ -1,25 +1,24 @@
-@extends('layouts.app')
 
-@section('content')
-    <div class="container p-2" style="background-color: #adacab; border-radius: 15px">
-        <div class="container p-3 text-center">
-            <h1>Список продуктов</h1>
-        </div>
-        @foreach($data as $course)
-            <div class="container p-3">
-                <div class="card">
-                    <div class="card-header" style="background-color: #df9f1f">
-                        <h3>
-                            {{ $course->name }}
-                        </h3>
-                    </div>
-                    <div class="card-body" style="background-color: #eecd8a">
-                        <h5 class="card-title">{{ $course->price }}</h5>
-                        <p class="card-text">Добавлено {{ $course->created_at }}</p>
-                        <a href="{{ route('course-purchase-data', $course->id) }}" class="btn" style="background-color: #df9f1f">Купить</a>
-                    </div>
-                </div>
-            </div>
-        @endforeach
+@extends('layouts.app') @section('content')
+<div>
+    <div >
+        <h1>Список продуктов</h1>
     </div>
+    @foreach($data as $course)
+    <div class="plan_box">
+        <div class="plan_box_time">
+            <div class="plan_box_time_round"></div>
+            <div class="plan_box_time_discount">
+                <p>Добавлено {{ $course->created_at }}</p>
+                <p><a href="{{ route('course-purchase-data', $course->id) }}" class="btn">Купить</a></p>
+                <p class="small_discount">{{ $course->name }}</p>
+            </div>
+        </div>
+        <div class="plan_box_price">
+            <p><strike>100</strike>$</p>
+            <p id="plan_box_p_price">{{ $course->price }}</p>
+        </div>
+    </div>
+    @endforeach
+</div>
 @endsection
