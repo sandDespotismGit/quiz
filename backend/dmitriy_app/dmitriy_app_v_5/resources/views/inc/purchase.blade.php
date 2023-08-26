@@ -51,15 +51,47 @@
                     </div>
                 </div>
                 <div class="plan_box_price">
-                    <p>
-                        <strike>{{ $data[1]->price }}</strike
-                        >$
-                    </p>
-                    <p id="plan_box_p_price">10$</p>
-                    <p>в день</p>
+                    Всё было тут
                 </div>
             </div>
         </div>
+
+        <fieldset>
+            @foreach ($data[1] as $rate)
+                <div
+                    class="form-check"
+                    style="
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: left;
+                "
+                >
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="chooseRate"
+                        value="{{ $rate->name }}"
+                        id="{{ $rate->id }}"
+                    />
+                    <label
+                        class="form-check-label"
+                        for="{{ $rate->id }}"
+                        style="
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: left;
+                    "
+                    >
+                        <p>
+                            Тариф {{ $rate->name }} за
+                            {{ $rate->price }}.
+                        </p>
+                    </label>
+                </div>
+            @endforeach
+        </fieldset>
 
         @foreach($data[2] as $elem)
         <div
@@ -193,10 +225,11 @@
                         a[0].style.display = "none";
 
                         if({{$data[5]->next_courses_id}} == null){
-                            url[0].href = "{{route('finish')}}}"
+                            url[0].href = "{{route('finish')}}}";
                         }
                         else {
-                            url[0].href = "{{ route('course-purchase-data', $data[5]->next_courses_id, $data[5]->key) }}"
+                            console.log({{$data[5]->next_courses_id}})
+                            url[0].href = "{{ route('course-purchase-data', $data[5]->next_courses_id, $data[5]->key) }}";
                         }
 
                     }

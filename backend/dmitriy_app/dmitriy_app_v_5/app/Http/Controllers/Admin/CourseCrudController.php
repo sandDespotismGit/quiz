@@ -185,7 +185,7 @@ class CourseCrudController extends CrudController
         }
 
         $course = Course::find($mainCourse->courses_id);
-        $rate = Rate::find($course->rate_id);
+        $rate = Rate::all();
         $collab = Collaboration::find($course->collaboration_id);
         $bump = DB::table('courses')->where('id', '!=', $course->id)->where('is_bump', '=', 1)->limit(2)->get();
         $bump_price = DB::table('rates')
