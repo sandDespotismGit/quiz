@@ -187,7 +187,7 @@ class CourseCrudController extends CrudController
         $course = Course::find($mainCourse->courses_id);
         $rate = Rate::find($course->rate_id);
         $collab = Collaboration::find($course->collaboration_id);
-        $bump = DB::table('courses')->where('id', '!=', $id)->where('is_bump', '=', 1)->limit(2)->get();
+        $bump = DB::table('courses')->where('id', '!=', $course->id)->where('is_bump', '=', 1)->limit(2)->get();
         $bump_price = DB::table('rates')
             ->whereIn('id', [$bump[0]->rate_id, $bump[1]->rate_id])->inRandomOrder()
             ->get();
@@ -211,5 +211,32 @@ class CourseCrudController extends CrudController
         else {
             return view('inc.purchase', ['data' => [$course, $rate, $collection, $collab, $crypto, $mainCourse]]);
         }
+    }
+
+    public function downCourse($key){
+        $mainCourse = CoursesClients::all()->whereNull('next_courses_id')->where('key', $key)->first();
+
+        $course = Course::find($mainCourse->courses_id);
+        $rate = Rate::find($course->rate_id);
+        $collab = Collaboration::find($course->collaboration_id);
+        $bump = DB::table('courses')->where('id', '!=', $course->id)->where('is_bump', '=', 1)->limit(2)->get();
+        $bump_price = DB::table('rates')
+            ->whereIn('id', [$bump[0]->rate_id, $bump[1]->rate_id])->inRandomOrder()
+            ->get();
+
+        $crypto = Cryptogram::find(1); //ищу по id = 1
+
+        if($bump_price->count() == 1){
+            $bump_price->push($bump_price[0]);
+        }
+
+        $collection = collect($bump)->zip($bump_price)->transform(function ($values) {
+            return [
+                'course' => $values[0],
+                'rate' => $values[1],
+            ];
+        });
+
+        return view('inc.purchase', ['data' => [$course, $rate, $collection, $collab, $crypto, $mainCourse]]);
     }
 }
