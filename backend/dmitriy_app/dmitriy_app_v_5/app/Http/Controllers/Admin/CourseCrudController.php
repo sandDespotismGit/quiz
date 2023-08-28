@@ -86,7 +86,10 @@ class CourseCrudController extends CrudController
         ])->label('Коллаборация');
 
         CRUD::column('name')->prefix('RU_')->label('Название');
+        CRUD::column('main_image')->type('image')->label('Изображение');
         CRUD::column('description')->label('Описание');
+        CRUD::column('other_image')->type('image')->label('Доп. изображение');
+        CRUD::column('full_description')->label('Дополнительное описание');
         CRUD::column('is_active')->label('Статус курса');
         CRUD::column('is_bump')->label('Возможность покупки в комплекте');
 
@@ -123,8 +126,29 @@ class CourseCrudController extends CrudController
             'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
         ]);
 
+        CRUD::field([
+            'label'        => "Изображение",
+            'name'         => "main_image",
+            'filename'     => "image_filename", // set to null if not needed
+            'type'         => 'image',
+            'aspect_ratio' => 1, // set to 0 to allow any aspect ratio
+            'crop'         => true, // set to true to allow cropping, false to disable
+            'src'          => NULL, // null to read straight from DB, otherwise set to model accessor function
+        ]);
+
         CRUD::field('name')->label("Название");
         CRUD::field('description')->label("Описание");
+        CRUD::field('full_description')->label("Дополнительное описание");
+
+        CRUD::field([
+            'label'        => "Дополнительное изображение",
+            'name'         => "other_image",
+            'filename'     => "image_filename", // set to null if not needed
+            'type'         => 'image',
+            'aspect_ratio' => 1, // set to 0 to allow any aspect ratio
+            'crop'         => true, // set to true to allow cropping, false to disable
+            'src'          => NULL, // null to read straight from DB, otherwise set to model accessor function
+        ]);
 
         CRUD::field([
             'label' => "Тарифы",
@@ -206,7 +230,7 @@ class CourseCrudController extends CrudController
         });
 
         if($mainCourse->next_courses_id == null){
-            return view('inc.finish', ['data' => ['Спасибо за покупки!']]);
+            return view('inc.finish', ['data' => ['Спасибо за покупку!']]);
         }
         else {
             return view('inc.purchase', ['data' => [$course, $rate, $collection, $collab, $crypto, $mainCourse]]);
@@ -217,7 +241,7 @@ class CourseCrudController extends CrudController
         $mainCourse = CoursesClients::all()->whereNull('next_courses_id')->where('key', $key)->first();
 
         $course = Course::find($mainCourse->courses_id);
-        $rate = Rate::find($course->rate_id);
+        $rate = Rate::all();
         $collab = Collaboration::find($course->collaboration_id);
         $bump = DB::table('courses')->where('id', '!=', $course->id)->where('is_bump', '=', 1)->limit(2)->get();
         $bump_price = DB::table('rates')

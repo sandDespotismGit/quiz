@@ -21,7 +21,7 @@
             </p>
             <img
                 class="card-img-top img-fluid"
-                src="{{ $data[3]->image }}"
+                src="{{ $data[0]->main_image }}"
                 class="card-img-top"
                 alt="..."
                 style="width: 200px; height: 200px"
@@ -56,10 +56,26 @@
             </div>
         </div>
 
-        <fieldset>
-            @foreach ($data[1] as $rate)
-                <div
-                    class="form-check"
+        @foreach ($data[1] as $rate)
+            <div
+                class="form-check"
+                style="
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: left;
+            "
+            >
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="chooseRate"
+                    value="{{ $rate->price }}"
+                    id="{{ $rate->id }}"
+                />
+                <label
+                    class="form-check-label"
+                    for="{{ $rate->id }}"
                     style="
                     display: flex;
                     flex-direction: row;
@@ -67,31 +83,18 @@
                     justify-content: left;
                 "
                 >
-                    <input
-                        class="form-check-input"
-                        type="radio"
-                        name="chooseRate"
-                        value="{{ $rate->name }}"
-                        id="{{ $rate->id }}"
-                    />
-                    <label
-                        class="form-check-label"
-                        for="{{ $rate->id }}"
-                        style="
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: left;
-                    "
-                    >
+                    <p>
+                        Тариф {{ $rate->name }} за
+                        {{ $rate->price }}
+                    </p>
+                    @if($rate->sale != null)
                         <p>
-                            Тариф {{ $rate->name }} за
-                            {{ $rate->price }}.
+                            &nbsp; со скидкой {{$rate->sale}}
                         </p>
-                    </label>
-                </div>
-            @endforeach
-        </fieldset>
+                    @endif
+                </label>
+            </div>
+        @endforeach
 
         @foreach($data[2] as $elem)
         <div
@@ -129,6 +132,18 @@
             </label>
         </div>
         @endforeach
+
+        <p>
+            Доп инфа - {{ $data[0]->full_description }}
+        </p>
+        <img
+            class="card-img-top img-fluid"
+            src="{{ $data[0]->other_image }}"
+            class="card-img-top"
+            alt="..."
+            style="width: 200px; height: 200px"
+        />
+
         <div class="agree">
             <input
                 type="checkbox"
@@ -146,13 +161,13 @@
         <div class="payments_form">
             <form id="paymentFormSample" autocomplete="off">
                 <p>Card number</p>
-                <input type="text" data-cp="cardNumber" id="hui" />
+                <input type="text" data-cp="cardNumber" id="cN" />
                 <p>expDate Month</p>
-                <input type="text" data-cp="expDateMonth" id="blyadina" />
+                <input type="text" data-cp="expDateMonth" id="dM" />
                 <p>expDate year</p>
-                <input type="text" data-cp="expDateYear" id="vagina" />
+                <input type="text" data-cp="expDateYear" id="dY" />
                 <p>cvv</p>
-                <input type="text" data-cp="cvv" id="ochko" />
+                <input type="text" data-cp="cvv" id="cvv" />
                 <p>name</p>
                 <input type="text" data-cp="name" />
                 <button class="small_button" onclick="create()">Оплатить 100 р.</button>
@@ -164,12 +179,12 @@
                         container: document.getElementById("paymentFormSample"),
                     });
                     const fieldValues = {
-                        cvv: document.getElementById("hui").innerText,
+                        cvv: document.getElementById("cvv").innerText,
                         cardNumber:
-                            document.getElementById("blyadina").innerText,
+                            document.getElementById("cN").innerText,
                         expDateMonth:
-                            document.getElementById("vagina").innerText,
-                        expDateYear: document.getElementById("ochko").innerText,
+                            document.getElementById("dM").innerText,
+                        expDateYear: document.getElementById("dY").innerText,
                     };
 
                     checkout
@@ -224,14 +239,14 @@
                     else {
                         a[0].style.display = "none";
 
-                        if({{$data[5]->next_courses_id}} == null){
-                            url[0].href = "{{route('finish')}}}";
+                        let next_url = {{$data[5]->next_courses_id}};
+
+                        if(next_url === null){
+                            url[0].href = "{{ route('finish') }}"
                         }
                         else {
-                            console.log({{$data[5]->next_courses_id}})
                             url[0].href = "{{ route('course-purchase-data', $data[5]->next_courses_id, $data[5]->key) }}";
                         }
-
                     }
                 }
             </script>
@@ -247,7 +262,7 @@
             <a
                 class="url_next"
                 href="{{ route('down-data', $data[5]->key) }}"
-                >Завершить</a
+            >Завершить</a
             >
         </button>
         <div class="payments"></div>
