@@ -1,4 +1,6 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app')
+
+@section('content')
 <div
     id="cock"
     style="display: flex; flex-direction: column; align-items: center"
@@ -241,7 +243,7 @@
 
                         let next_url = {{$data[5]->next_courses_id}};
 
-                        if(next_url === null){
+                        if(next_url === 0){
                             url[0].href = "{{ route('finish') }}"
                         }
                         else {
@@ -259,11 +261,19 @@
             >
         </button>
         <button class="big_button">
-            <a
-                class="url_next"
-                href="{{ route('down-data', $data[5]->key) }}"
-            >Завершить</a
-            >
+            @if($data[5]->next_courses_id == 0)
+                <a
+                    class="url_next"
+                    href="{{ route('finish') }}"
+                >Завершить</a
+                >
+            @else
+                <a
+                    class="url_next"
+                    href="{{ route('down-data', $data[5]->key) }}"
+                >Завершить</a
+                >
+            @endif
         </button>
         <div class="payments"></div>
     </div>

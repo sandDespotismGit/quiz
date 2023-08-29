@@ -241,6 +241,7 @@ class CourseCrudController extends CrudController
         $mainCourse = CoursesClients::all()->whereNull('next_courses_id')->where('key', $key)->first();
 
         $course = Course::find($mainCourse->courses_id);
+        $mainCourse->next_courses_id = 0;
         $rate = Rate::all();
         $collab = Collaboration::find($course->collaboration_id);
         $bump = DB::table('courses')->where('id', '!=', $course->id)->where('is_bump', '=', 1)->limit(2)->get();
